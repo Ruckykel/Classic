@@ -16,24 +16,32 @@ const About = () => {
           {/* Left content - Text */}
           <div className="lg:w-1/2">
             <h3 className="text-4xl font-light text-white mb-6">
-              Meet <span className="text-blue-200 opacity-80">John Doe</span>, 
-              <br />Founder & Creative Director
+              Meet <span className="text-blue-200 opacity-80">Anointing David</span>, 
+              <br />Founder & Community Lead
             </h3>
             
             <p className="text-gray-400 font-light text-lg leading-relaxed mb-6">
-              With over 15 years of experience in digital marketing and design, John has built BANG Media from the ground up with a single mission: creating digital experiences that truly connect with audiences.
+              A seasoned social media strategist and influencer with six years of invaluable experience.
+              Throughout my career, I've been dedicated to nurturing the creative talents of aspiring artists 
+              and effectively leveraging social media to engage, inspire, and influence a wide audience.
             </p>
             
             <p className="text-gray-400 font-light text-lg leading-relaxed mb-8">
-              After working with major brands like Nike, Apple, and Tesla, John recognized that businesses of all sizes deserve exceptional digital presence. This belief led to the formation of BANG Media in 2010, a boutique agency that combines corporate-level expertise with personalized attention.
+              A community lead at Tekart and co-founder at 5ivehq, I specialize in bridging data-driven insights 
+              with creative execution to amplify artists, brands, and campaigns. With a keen eye on trends and a 
+              deep understanding of audience behavior, I generate strategies that influence commitment, growth and massive impact.
             </p>
             
             {/* Quote */}
             <div className="bg-gray-900 bg-opacity-50 p-8 rounded-lg border-l-4 border-blue-300 mb-10">
               <p className="text-white italic font-light text-xl leading-relaxed mb-4">
-                "Great design isn't just about aesthetics—it's about creating meaningful connections between brands and their audiences. That's where the magic happens."
+                "A listener is always wiser than a constant speaker."
               </p>
-              <p className="text-blue-200 font-light">— John Doe</p>
+              <p className="text-blue-200 font-light mb-4">— Anointing David</p>
+              <p className="text-white italic font-light text-xl leading-relaxed mb-4">
+                "Push every P like it's your last."
+              </p>
+              <p className="text-blue-200 font-light">— Anointing David</p>
             </div>
             
             {/* Experience Highlights */}
@@ -45,9 +53,9 @@ const About = () => {
                       <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-white text-lg font-light">Award-winning</span>
+                  <span className="text-white text-lg font-light">Strategist</span>
                 </div>
-                <p className="text-gray-500 font-light pl-11">5x Design Award recipient</p>
+                <p className="text-gray-500 font-light pl-11">6+ years of experience</p>
               </div>
               
               <div>
@@ -57,9 +65,9 @@ const About = () => {
                       <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
                     </svg>
                   </div>
-                  <span className="text-white text-lg font-light">Educator</span>
+                  <span className="text-white text-lg font-light">Dancer</span>
                 </div>
-                <p className="text-gray-500 font-light pl-11">Guest lecturer at Design School</p>
+                <p className="text-gray-500 font-light pl-11">Professional dancer & teacher</p>
               </div>
               
               <div>
@@ -69,9 +77,9 @@ const About = () => {
                       <path fillRule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-white text-lg font-light">Speaker</span>
+                  <span className="text-white text-lg font-light">Leader</span>
                 </div>
-                <p className="text-gray-500 font-light pl-11">TED talk on Digital Innovation</p>
+                <p className="text-gray-500 font-light pl-11">Community lead at Tekart</p>
               </div>
               
               <div>
@@ -81,9 +89,9 @@ const About = () => {
                       <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                     </svg>
                   </div>
-                  <span className="text-white text-lg font-light">Mentor</span>
+                  <span className="text-white text-lg font-light">Founder</span>
                 </div>
-                <p className="text-gray-500 font-light pl-11">Advised 50+ startups</p>
+                <p className="text-gray-500 font-light pl-11">Co-founder of elite tribe & 5ivehq</p>
               </div>
             </div>
           </div>
@@ -98,8 +106,8 @@ const About = () => {
               {/* Main image */}
               <div className="relative z-10 mb-6">
                 <img 
-                  src="/Classic.jpeg" 
-                  alt="John Doe - Founder & Creative Director" 
+                  src="/Classic4.jpeg" 
+                  alt="Anointing David - Founder & Community Lead" 
                   className="rounded-lg shadow-2xl border border-gray-800 h-auto max-w-md"
                 />
                 

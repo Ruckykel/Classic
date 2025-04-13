@@ -1,98 +1,141 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 const RecentWorkSection = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  
+  const [activeFilter, setActiveFilter] = useState('All'); // Kept for future expansion if needed
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalProject, setModalProject] = useState(null);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
   const carouselRef = useRef(null);
   
-  // Handle mouse/touch events for smooth sliding
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - carouselRef.current.offsetLeft);
-    setScrollLeft(carouselRef.current.scrollLeft);
-  };
-  
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - carouselRef.current.offsetLeft);
-    setScrollLeft(carouselRef.current.scrollLeft);
-  };
-  
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-  
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Scroll speed multiplier
-    carouselRef.current.scrollLeft = scrollLeft - walk;
-    setScrollPosition(carouselRef.current.scrollLeft);
-  };
-  
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    const x = e.touches[0].pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Scroll speed multiplier
-    carouselRef.current.scrollLeft = scrollLeft - walk;
-    setScrollPosition(carouselRef.current.scrollLeft);
-  };
-  
-  // Add event listeners to document
-  useEffect(() => {
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchend', handleMouseUp);
-    
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchend', handleMouseUp);
-    };
-  }, []);
-  
-  // Project data
+  // Project data with multiple images per project
   const projects = [
     {
       id: 1,
-      initials: "SDG",
-      initialsColor: "bg-orange-500",
-      title: "Same Day Granny Flats",
-      description: "A national, well-recognised brand combining corporate scale with local expertise, brought to life through a modern website and a results-driven digital marketing campaign.",
-      tags: ["DIGITAL MARKETING", "WEB DESIGN & DEV"],
-      image: "/HeroImg.webp"
+      initials: "OS",
+      initialsColor: "bg-purple-500",
+      title: "Osogeme - Viral Music Campaign",
+      description: "Achieved over 1 million streams across platforms for the hit song 'Osogeme' by Wademix & CupidSZN. Featured on Nigeria's Viral 50 Spotify playlist and generated 50k+ TikTok videos.",
+      tags: ["MUSIC MARKETING", "VIRAL CAMPAIGN"],
+      images: ["/osogeme.jpeg", "/osogeme1.jpeg", "/osogeme2.jpeg"]
     },
     {
       id: 2,
-      initials: "TT",
-      initialsColor: "bg-blue-500",
-      title: "TikTok Influencer Campaign",
-      description: "Viral social media campaign that increased brand awareness by 240% through strategic influencer partnerships and trending sound utilization.",
-      tags: ["SOCIAL MEDIA", "INFLUENCER MARKETING"],
-      image: "/HeroImg.webp"
+      initials: "DP",
+      initialsColor: "bg-orange-500",
+      title: "Dey Play - Artist Promotion",
+      description: "Successfully promoted 'Dey Play' by Bims, resulting in 340k+ streams and 35k+ TikTok videos within just 4 days of release. Created strategic social media templates that amplified reach.",
+      tags: ["ARTIST PROMOTION", "SOCIAL MEDIA"],
+      images: ["/deyplay.jpeg", "/deyplay1.jpeg"]
     },
     {
       id: 3,
-      initials: "SP",
-      initialsColor: "bg-purple-500",
-      title: "Spotify Podcast Series",
-      description: "Developed a complete podcast identity including cover art, promotional materials, and a content strategy that grew listenership by 300% in three months.",
-      tags: ["AUDIO PRODUCTION", "BRAND STRATEGY"],
-      image: "/HeroImg.webp"
+      initials: "SW",
+      initialsColor: "bg-green-500",
+      title: "Swayvee - CapCut Template Campaign",
+      description: "Developed a viral TikTok template for Swayvee's 'US' that gained 441k CapCut uses and 37k+ TikTok sound uses in just 5 days, demonstrating exceptional growth metrics.",
+      tags: ["TIKTOK MARKETING", "CONTENT CREATION"],
+      images: ["/swayvee.jpeg"]
     },
     {
       id: 4,
-      initials: "IG",
+      initials: "DX",
+      initialsColor: "bg-green-400",
+      title: "Dxtiny - Babcook Template",
+      description: "Created a viral TikTok and CapCut template 'Babcook' that accumulated 33.3k CapCut uses and 7k+ TikTok sound uses in just 4 days, showing rapid adoption across platforms.",
+      tags: ["TIKTOK MARKETING", "CONTENT CREATION"],
+      images: ["/dxtiny.jpeg"]
+    },
+    {
+      id: 5,
+      initials: "TT",
       initialsColor: "bg-pink-500",
-      title: "Instagram Reels Strategy",
-      description: "Content strategy focused on short-form video that increased engagement by 180% and follower growth by 5,000 accounts in a single quarter.",
-      tags: ["CONTENT CREATION", "SOCIAL GROWTH"],
-      image: "/HeroImg.webp"
+      title: "Toyin Tomato - Streaming Growth",
+      description: "Led the campaign for Toyin Tomato (ITAM) that reached 1 million+ Spotify streams in just 2 weeks. The song appeared on 6 Spotify viral charts and generated 80k+ TikTok videos.",
+      tags: ["STREAMING PROMOTION", "DIGITAL MARKETING"],
+      images: ["/tomato.jpeg", "/tomato1.jpeg", "/tomato2.jpeg"]
     }
   ];
+  
+  // Handler for next slide
+  const goToNextSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === projects.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Handler for previous slide
+  const goToPrevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? projects.length - 1 : prevIndex - 1
+    );
+  };
+  
+  // Go to specific slide
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+  
+  // Open modal with project details
+  const openModal = (project, imageIndex = 0) => {
+    setModalProject(project);
+    setModalImageIndex(imageIndex);
+    setModalOpen(true);
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+  };
+  
+  // Close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalProject(null);
+    // Allow body scrolling when modal is closed
+    document.body.style.overflow = 'auto';
+  };
+  
+  // Change image in modal
+  const changeModalImage = (direction) => {
+    if (!modalProject) return;
+    
+    if (direction === 'next') {
+      setModalImageIndex((prevIndex) => 
+        prevIndex === modalProject.images.length - 1 ? 0 : prevIndex + 1
+      );
+    } else {
+      setModalImageIndex((prevIndex) => 
+        prevIndex === 0 ? modalProject.images.length - 1 : prevIndex - 1
+      );
+    }
+  };
+  
+  // Direct selection of image in modal
+  const selectModalImage = (index) => {
+    setModalImageIndex(index);
+  };
+  
+  // For keyboard navigation in modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!modalOpen) return;
+      
+      switch (e.key) {
+        case 'Escape':
+          closeModal();
+          break;
+        case 'ArrowLeft':
+          changeModalImage('prev');
+          break;
+        case 'ArrowRight':
+          changeModalImage('next');
+          break;
+        default:
+          break;
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalOpen, modalProject]);
   
   return (
     <section id='Work' className="min-h-screen bg-black bg-gradient-to-br from-black via-gray-900 to-black pt-24 pb-20 px-4">
@@ -105,198 +148,142 @@ const RecentWorkSection = () => {
           </h1>
         </div>
 
-        {/* Filter Tabs */}
+        {/* Filter Tabs - Simplified */}
         <div className="max-w-4xl mx-auto mb-8">
-          <div className="bg-gray-900 bg-opacity-50 rounded-lg p-1">
-            {/* Filter Options */}
-            <div className="flex flex-wrap justify-center p-4 gap-6 text-sm">
-              <button 
-                className={`${activeFilter === 'All' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('All')}
-              >
-                All
-              </button>
-              <button 
-                className={`${activeFilter === 'Social Media' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('Social Media')}
-              >
-                Social Media
-              </button>
-              <button 
-                className={`${activeFilter === 'Content Creation' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('Content Creation')}
-              >
-                Content Creation
-              </button>
-              <button 
-                className={`${activeFilter === 'Influencer Marketing' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('Influencer Marketing')}
-              >
-                Influencer Marketing
-              </button>
-              <button 
-                className={`${activeFilter === 'Brand Strategy' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('Brand Strategy')}
-              >
-                Brand Strategy
-              </button>
-              <button 
-                className={`${activeFilter === 'Video Production' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('Video Production')}
-              >
-                Video Production
-              </button>
-              <button 
-                className={`${activeFilter === 'Audio Production' ? 'text-white' : 'text-gray-400'} font-light hover:text-white`}
-                onClick={() => setActiveFilter('Audio Production')}
-              >
-                Audio Production
-              </button>
-            </div>
+          <div className="bg-gray-900 bg-opacity-50 rounded-lg p-4">
+            <h3 className="text-center text-white text-lg font-light">
+              Elite Tribe Music Promotions
+            </h3>
           </div>
         </div>
 
-        {/* Swipe Indicator */}
+        {/* Navigation Instructions */}
         <div className="flex items-center justify-center mb-6 text-gray-400">
-          <svg className="w-5 h-5 mr-2 animate-pulse" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 9a1 1 0 011-1h2a1 1 0 010 2H9a1 1 0 01-1-1zM4 9a1 1 0 011-1h2a1 1 0 010 2H5a1 1 0 01-1-1zM12 9a1 1 0 011-1h2a1 1 0 010 2h-2a1 1 0 01-1-1z"></path>
+          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 9a1 1 0 011-1h2a1 1 0 010 2H9a1 1 0 01-1-1z"></path>
           </svg>
-          <span className="text-sm font-light">Swipe for more projects</span>
+          <span className="text-sm font-light">Use arrows to navigate projects</span>
         </div>
 
         {/* Projects Carousel */}
         <div className="mt-8 relative max-w-7xl mx-auto">
-          {/* Left Navigation Arrow - Positioned at left edge */}
+          {/* Left Navigation Arrow */}
           <button 
-            className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-8 z-10 bg-gray-900 bg-opacity-70 text-white rounded-full p-3 shadow-lg hover:bg-opacity-90 transition-all duration-300 focus:outline-none"
-            onClick={() => {
-              if (carouselRef.current) {
-                // Calculate previous card position
-                const currentIndex = Math.round(scrollPosition / (carouselRef.current.scrollWidth / projects.length));
-                const prevIndex = Math.max(0, currentIndex - 1);
-                const newPosition = prevIndex * (carouselRef.current.scrollWidth / projects.length);
-                
-                carouselRef.current.scrollTo({
-                  left: newPosition,
-                  behavior: 'smooth'
-                });
-                setScrollPosition(newPosition);
-              }
-            }}
-            style={{ opacity: scrollPosition > 20 ? 1 : 0.3 }}
+            className="absolute left-2 md:left-8 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900 bg-opacity-70 text-white rounded-full p-3 shadow-lg hover:bg-opacity-90 transition-all duration-300 focus:outline-none"
+            onClick={goToPrevSlide}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
-          {/* Right Navigation Arrow - Positioned at right edge */}
+          {/* Right Navigation Arrow */}
           <button 
-            className="hidden md:flex absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8 z-10 bg-gray-900 bg-opacity-70 text-white rounded-full p-3 shadow-lg hover:bg-opacity-90 transition-all duration-300 focus:outline-none"
-            onClick={() => {
-              if (carouselRef.current) {
-                // Calculate next card position
-                const currentIndex = Math.round(scrollPosition / (carouselRef.current.scrollWidth / projects.length));
-                const nextIndex = Math.min(projects.length - 1, currentIndex + 1);
-                const newPosition = nextIndex * (carouselRef.current.scrollWidth / projects.length);
-                
-                carouselRef.current.scrollTo({
-                  left: newPosition,
-                  behavior: 'smooth'
-                });
-                setScrollPosition(newPosition);
-              }
-            }}
-            style={{ 
-              opacity: carouselRef.current 
-                ? scrollPosition < (carouselRef.current.scrollWidth - carouselRef.current.clientWidth - 20) ? 1 : 0.3
-                : 1 
-            }}
+            className="absolute right-2 md:right-8 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900 bg-opacity-70 text-white rounded-full p-3 shadow-lg hover:bg-opacity-90 transition-all duration-300 focus:outline-none"
+            onClick={goToNextSlide}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
           
+          {/* Single Project Display */}
           <div className="overflow-hidden">
             <div 
               ref={carouselRef}
-              className="flex space-x-6 overflow-x-auto scrollbar-hide pb-8"
-              style={{ 
-                scrollBehavior: isDragging ? 'auto' : 'smooth',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none'
-              }}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseUp}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleMouseUp}
-              onScroll={() => {
-                if (carouselRef.current) {
-                  setScrollPosition(carouselRef.current.scrollLeft);
-                }
-              }}
+              className="transition-all duration-500 ease-in-out"
             >
-              {projects.map((project) => (
-                <div 
-                  key={project.id} 
-                  className="flex-shrink-0 w-full md:w-[90%] lg:w-[80%] xl:w-[70%]"
-                >
-                  <div className="bg-gradient-to-r from-gray-900 to-green-900 bg-opacity-30 rounded-xl overflow-hidden">
-                    <div className="p-8 lg:p-12 flex flex-col lg:flex-row">
-                      {/* Left Content */}
-                      <div className="lg:w-1/2 flex flex-col justify-between">
-                        {/* Logo Circle */}
-                        <div className="mb-6">
-                          <div className={`${project.initialsColor} text-white rounded-full h-12 w-12 flex items-center justify-center font-bold`}>
-                            <span>{project.initials}</span>
-                          </div>
-                        </div>
-                        
-                        {/* Project Title and Description */}
-                        <div className="mb-8">
-                          <h2 className="text-white text-3xl lg:text-4xl font-light mb-4 lg:mb-6">{project.title}</h2>
-                          <p className="text-gray-400 font-light leading-relaxed">
-                            {project.description}
-                          </p>
-                        </div>
-                        
-                        {/* Project Tags */}
-                        <div className="flex flex-wrap gap-3 mt-auto">
-                          {project.tags.map((tag, index) => (
-                            <div key={index} className="flex items-center text-blue-400 bg-blue-900 bg-opacity-20 px-3 py-1 rounded-full text-xs lg:text-sm">
-                              <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
-                              </svg>
-                              <span>{tag}</span>
-                            </div>
-                          ))}
+              {/* Current Project */}
+              <div className="w-full mx-auto max-w-4xl">
+                <div className="bg-gradient-to-r from-gray-900 to-green-900 bg-opacity-30 rounded-xl overflow-hidden">
+                  <div className="p-8 lg:p-12 flex flex-col lg:flex-row">
+                    {/* Left Content */}
+                    <div className="lg:w-1/2 flex flex-col justify-between">
+                      {/* Logo Circle */}
+                      <div className="mb-6">
+                        <div className={`${projects[currentIndex].initialsColor} text-white rounded-full h-12 w-12 flex items-center justify-center font-bold`}>
+                          <span>{projects[currentIndex].initials}</span>
                         </div>
                       </div>
                       
-                      {/* Right Content - Project Image */}
-                      <div className="lg:w-1/2 mt-8 lg:mt-0 flex justify-end">
-                        <div className="relative">
-                          <img 
-                            src={project.image} 
-                            alt={project.title} 
-                            className="rounded-lg shadow-2xl w-full h-auto" 
-                          />
-                          
-                          {/* View Project Button */}
-                          <div className="absolute bottom-4 right-4">
-                            <button className="bg-transparent border border-blue-300 text-blue-300 rounded-full px-4 py-2 lg:px-6 lg:py-3 text-xs lg:text-sm hover:bg-blue-900 hover:bg-opacity-20 transition-all duration-300">
-                              View Project
-                            </button>
+                      {/* Project Title and Description */}
+                      <div className="mb-8">
+                        <h2 className="text-white text-3xl lg:text-4xl font-light mb-4 lg:mb-6">{projects[currentIndex].title}</h2>
+                        <p className="text-gray-400 font-light leading-relaxed">
+                          {projects[currentIndex].description}
+                        </p>
+                      </div>
+                      
+                      {/* Project Tags */}
+                      <div className="flex flex-wrap gap-3 mt-auto">
+                        {projects[currentIndex].tags.map((tag, index) => (
+                          <div key={index} className="flex items-center text-blue-400 bg-blue-900 bg-opacity-20 px-3 py-1 rounded-full text-xs lg:text-sm">
+                            <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
+                            </svg>
+                            <span>{tag}</span>
                           </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Right Content - Project Image Gallery */}
+                    <div className="lg:w-1/2 mt-8 lg:mt-0 flex justify-end">
+                      <div className="relative w-full">
+                        {/* Main Image */}
+                        <div 
+                          className="cursor-pointer"
+                          onClick={() => openModal(projects[currentIndex])}
+                        >
+                          <img 
+                            src={projects[currentIndex].images[0]} 
+                            alt={projects[currentIndex].title} 
+                            className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-[4/3]" 
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                            <div className="text-white">
+                              <svg className="w-10 h-10 mx-auto" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 8a1 1 0 011-1h1V6a1 1 0 012 0v1h1a1 1 0 110 2H9v1a1 1 0 11-2 0V9H6a1 1 0 01-1-1z" />
+                                <path fillRule="evenodd" d="M2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8zm6-4a4 4 0 100 8 4 4 0 000-8z" clipRule="evenodd" />
+                              </svg>
+                              <p className="text-sm mt-2">Click to view gallery</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Thumbnail Preview if more than one image */}
+                        {projects[currentIndex].images.length > 1 && (
+                          <div className="flex mt-3 space-x-2 justify-center">
+                            {projects[currentIndex].images.map((image, idx) => (
+                              <div 
+                                key={idx}
+                                className={`w-16 h-16 rounded-md overflow-hidden cursor-pointer ${idx === 0 ? 'ring-2 ring-blue-400' : 'opacity-70 hover:opacity-100'}`}
+                                onClick={() => openModal(projects[currentIndex], idx)}
+                              >
+                                <img 
+                                  src={image} 
+                                  alt={`${projects[currentIndex].title} - ${idx + 1}`} 
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {/* View Project Button */}
+                        <div className="absolute bottom-4 right-4">
+                          <button 
+                            className="bg-transparent border border-blue-300 text-blue-300 rounded-full px-4 py-2 lg:px-6 lg:py-3 text-xs lg:text-sm hover:bg-blue-900 hover:bg-opacity-20 transition-all duration-300"
+                            onClick={() => openModal(projects[currentIndex])}
+                          >
+                            View Campaign Details
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
           
@@ -306,37 +293,92 @@ const RecentWorkSection = () => {
               <button 
                 key={index}
                 className={`w-2 h-2 rounded-full ${
-                  scrollPosition > (index * carouselRef.current?.offsetWidth / projects.length) - 50 && 
-                  scrollPosition < ((index + 1) * carouselRef.current?.offsetWidth / projects.length) - 50
-                    ? 'bg-blue-300' 
-                    : 'bg-gray-600'
+                  currentIndex === index ? 'bg-blue-300' : 'bg-gray-600'
                 }`}
-                onClick={() => {
-                  if (carouselRef.current) {
-                    const scrollTo = index * (carouselRef.current.scrollWidth / projects.length);
-                    carouselRef.current.scrollTo({
-                      left: scrollTo,
-                      behavior: 'smooth'
-                    });
-                    setScrollPosition(scrollTo);
-                  }
-                }}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to project ${index + 1}`}
               />
             ))}
           </div>
         </div>
       </div>
       
-      {/* Custom CSS for hiding scrollbars */}
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+      {/* Modal for displaying project gallery */}
+      {modalOpen && modalProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" onClick={closeModal}>
+          <div className="relative max-w-6xl w-full p-4" onClick={(e) => e.stopPropagation()}>
+            {/* Close button */}
+            <button 
+              className="absolute top-2 right-2 z-20 bg-gray-800 text-white rounded-full p-2"
+              onClick={closeModal}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {/* Main image container */}
+            <div className="relative h-full">
+              <img 
+                src={modalProject.images[modalImageIndex]} 
+                alt={modalProject.title}
+                className="mx-auto max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
+              />
+              
+              {/* Project details */}
+              <div className="bg-gray-900 bg-opacity-80 p-4 rounded-b-lg absolute bottom-0 left-0 right-0">
+                <h3 className="text-white text-xl font-light">{modalProject.title}</h3>
+                <p className="text-gray-300 text-sm">{modalProject.description}</p>
+              </div>
+              
+              {/* Navigation arrows if more than one image */}
+              {modalProject.images.length > 1 && (
+                <>
+                  <button 
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2"
+                    onClick={(e) => { e.stopPropagation(); changeModalImage('prev'); }}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button 
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2"
+                    onClick={(e) => { e.stopPropagation(); changeModalImage('next'); }}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+              
+              {/* Thumbnail navigation */}
+              {modalProject.images.length > 1 && (
+                <div className="flex justify-center space-x-2 mt-4">
+                  {modalProject.images.map((image, idx) => (
+                    <div 
+                      key={idx}
+                      className={`w-16 h-16 rounded-md overflow-hidden cursor-pointer transition-all ${
+                        idx === modalImageIndex 
+                          ? 'ring-2 ring-blue-400 opacity-100' 
+                          : 'opacity-50 hover:opacity-80'
+                      }`}
+                      onClick={() => selectModalImage(idx)}
+                    >
+                      <img 
+                        src={image} 
+                        alt={`Thumbnail ${idx + 1}`} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

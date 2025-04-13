@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const Clients = () => {
-  // This effect sets up the infinite scrolling animation
-  useEffect(() => {
-    const setupMarquee = () => {
-      const marquees = document.querySelectorAll('.marquee-content');
-      
-      marquees.forEach(marquee => {
-        // Clone the content for a seamless loop
-        const content = marquee.innerHTML;
-        marquee.innerHTML = content + content;
-      });
-    };
-    
-    setupMarquee();
-  }, []);
+  // List of clients to display
+  const clients = [
+    "5IVE",
+    "ELITETRIBE",
+    "MARVINS", 
+    "CHOCOLATE CITY",
+    "ENCORE RECORDINGS"
+  ];
 
+  // Duplicate the array to create a seamless loop
+  const duplicatedClients = [...clients, ...clients];
+  
   return (
     <section id="Clients" className="bg-black bg-gradient-to-br from-black via-gray-900 to-black py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
@@ -27,60 +24,44 @@ const Clients = () => {
           </h2>
         </div>
         
-        {/* Logos Marquee Container - Single Line */}
-        <div className="relative overflow-hidden">
-          <div className="marquee-container">
-            <div className="marquee-content flex space-x-12 py-4 animate-marquee">
-              {/* Client Logos - Single Row */}
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">ICTIVITY</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">BIGWHEEL</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">COFFEE BROS</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">MARITIEM</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">DOIJER&KALFF</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">DE KLUIS</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">TECH CORP</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">FUSION</div>
-              </div>
-              <div className="flex-shrink-0 w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center px-5">
-                <div className="text-white text-xl font-light">NEXUS</div>
-              </div>
+        {/* Logos Marquee Container */}
+        <div className="relative overflow-hidden py-6">
+          <div className="overflow-hidden whitespace-nowrap">
+            <div 
+              className="inline-block animate-marquee" 
+              style={{
+                animation: 'marquee 20s linear infinite',
+                minWidth: '100%'
+              }}
+            >
+              {duplicatedClients.map((client, index) => (
+                <div 
+                  key={index} 
+                  className="inline-block w-40 h-16 bg-gray-900 bg-opacity-50 rounded-lg mx-5 align-middle"
+                >
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-white text-xl font-light">{client}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
       
-      {/* CSS for animations */}
-      <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        
-        .marquee-container {
-          overflow: hidden;
-          width: 100%;
-        }
-        
-        .animate-marquee {
-          animation: marquee 15s linear infinite;
-          min-width: 100%;
-        }
-      `}</style>
+      {/* Global styles for animation */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          
+          .animate-marquee {
+            animation: marquee 20s linear infinite;
+          }
+        `
+      }} />
     </section>
   );
 };

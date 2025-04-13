@@ -8,13 +8,14 @@ const Hero = () => {
           {/* Left content - Text */}
           <div className="lg:w-1/2 mb-12 lg:mb-0">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-light mb-6">
-              <span className="text-white">We create </span>
-              <span className="text-blue-200 opacity-80">digital </span>
-              <span className="text-white">experiences</span>
+              <span className="text-white">Hi, I'm Anointing David</span>
             </h1>
-            <p className="text-gray-400 font-light text-xl leading-relaxed mb-10 max-w-xl">
-              BANG Media crafts bold, effective digital solutions that elevate brands and drive results. 
-              Our team of experts combines creativity with strategic thinking to deliver award-winning work.
+            <p className="text-gray-400 font-light text-xl leading-relaxed mb-5 max-w-xl">
+              I specialize in bridging data-driven insights with creative execution to amplify artists, brands, and campaigns.
+              With a keen eye on trends and a deep understanding of audience behavior towards the platform, I generate strategies that influence commitment, growth and massive impact.
+            </p>
+            <p className="text-blue-200 opacity-80 font-light text-xl mb-10">
+              Creating memories one at a time.
             </p>
             <div>
               <a 
@@ -25,18 +26,18 @@ const Hero = () => {
                   document.getElementById('Work').scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                View Our Work
+                View My Work
               </a>
             </div>
             
             {/* Stats */}
             <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg">
               <div>
-                <p className="text-3xl font-light text-blue-200 opacity-80">12+</p>
+                <p className="text-3xl font-light text-blue-200 opacity-80">5+</p>
                 <p className="text-gray-500 text-sm mt-1">Years Experience</p>
               </div>
               <div>
-                <p className="text-3xl font-light text-blue-200 opacity-80">350+</p>
+                <p className="text-3xl font-light text-blue-200 opacity-80">150+</p>
                 <p className="text-gray-500 text-sm mt-1">Projects Completed</p>
               </div>
               <div>
@@ -57,7 +58,7 @@ const Hero = () => {
               <div className="relative z-10">
                 <img 
                   src="/Classic.jpeg" 
-                  alt="Creative Director" 
+                  alt="Anointing David" 
                   className="rounded-lg shadow-2xl border border-gray-800 h-auto w-auto max-w-md max-h-96 object-cover"
                 />
                 
@@ -70,8 +71,8 @@ const Hero = () => {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-white text-sm font-medium">John Doe</p>
-                      <p className="text-gray-400 text-xs">Creative Director</p>
+                      <p className="text-white text-sm font-medium">Anointing David</p>
+                      <p className="text-gray-400 text-xs">Co-founder of elite tribe</p>
                     </div>
                   </div>
                 </div>
